@@ -1,14 +1,13 @@
-FROM dart:stable AS build
+
+
+FROM dart:stable
 
 WORKDIR /app
-COPY pubspec.* ./
-RUN dart pub get
 
 COPY . .
+
+RUN dart pub get --no-example
+
 RUN dart compile exe bin/my_one_bot.dart -o bin/bot
 
-FROM scratch
-COPY --from=build /runtime/ /
-COPY --from=build /app/bin/bot /app/bin/bot
-
-CMD ["/app/bin/bot"]
+CMD ["./bin/bot"]
